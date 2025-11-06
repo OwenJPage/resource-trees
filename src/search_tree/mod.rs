@@ -1,60 +1,57 @@
 use {
+    self::subtree_index::SubtreeIndex,
     crate::{
+        HeightType,
+        SizeType,
         dose::Dose,
-        node::Node,
         pill_count::PillCount,
     },
+    node::Node,
     std::{
         collections::VecDeque,
         rc::Rc,
     },
 };
 
+mod new_node;
+mod node;
+mod subtree_index;
 #[cfg(test)]
 mod test;
 
 pub struct SearchTree {
-    roots:  Box<[Rc<Node>]>,
-    tops:   Box<[Rc<Node>]>,
-    height: usize,
-    size:   usize,
+    root: Rc<Node>,
+    tops: Box<[Rc<Node>]>,
 }
 
 impl SearchTree {
     pub fn build<D: IntoIterator<Item = Dose>>(doses: D, starting_stock: PillCount) -> Self {
-        let mut roots = Vec::new();
+        let root = Node::new_start_node(starting_stock);
         let mut tops = Vec::new();
-        let mut height: usize = 0;
-        let mut size: usize = 0;
 
-        let mut current = vec![Node::new_start_node(starting_stock)];
+        let mut current = vec![root.clone()];
 
         'doses: for dose in doses {
             let pill_combinations = PillCount::find_combinations(dose.amount)
                 .expect("Total dose amount is not divisible by available pill sizes.");
 
             for _dose_day in 0..dose.days {
-                let mut next: Vec<Rc<Node>> = Vec::new(); // TODO: Use clever capacity
+                let mut next: Vec<Rc<Node>> =
+                    Vec::with_capacity(current.len() * pill_combinations.len());
 
                 for node in &current {
+                    let mut children_adder = node.add_children();
                     for pill_count in pill_combinations.as_ref() {
-                        if let Some(child_node) = node.add_child(*pill_count) {
+                        if let Some(child_node) = children_adder.add_child(*pill_count) {
                             next.push(child_node);
-                            size += 1;
                         }
                     }
-                }
-
-                // TODO: Optimise, currently branching with every iteration
-                if roots.is_empty() {
-                    next.clone_into(&mut roots);
                 }
 
                 if next.is_empty() {
                     break 'doses;
                 } else {
                     current = next;
-                    height += 1;
                 }
             }
         }
@@ -62,12 +59,39 @@ impl SearchTree {
         current.clone_into(&mut tops);
 
         Self {
-            roots: roots.into_boxed_slice(),
+            root,
             tops: tops.into_boxed_slice(),
-            height,
-            size,
         }
     }
+
+    fn new_subtree(root: Rc<Node>) -> Self {
+        Self {
+            root,
+            tops: Vec::new().into_boxed_slice(),
+        }
+    }
+
+    #[inline]
+    pub fn height(&self) -> HeightType {
+        self.root.get_height()
+    }
+
+    #[inline]
+    pub fn size(&self) -> SizeType {
+        self.root.get_size()
+    }
+
+    // pub fn subtree<I: SubtreeIndex>(&self, child_index: I) -> Option<Self> {
+    //     let mut cur = self.root.clone();
+    //
+    //     for index in child_index.get_index() {
+    //         let child = cur.children.borrow().get(index)?.clone();
+    //
+    //         cur = child;
+    //     }
+    //
+    //     cur
+    // }
 
     pub fn best_routes(&self) -> Box<[Box<[PillCount]>]> {
         self.tops.iter().map(|t| {

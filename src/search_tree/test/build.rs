@@ -7,26 +7,20 @@ fn test_10x5_ample_stock() {
 
     let tree = SearchTree::build(doses, starting_stock);
 
-    const EXPECTED_SIZE: usize = 5;
+    const EXPECTED_SIZE: SizeType = 5;
     assert_eq!(
-        tree.size, EXPECTED_SIZE,
+        tree.size(),
+        EXPECTED_SIZE,
         "Tree size is {:#?} but expected {EXPECTED_SIZE}",
-        tree.size
+        tree.size()
     );
 
-    const EXPECTED_HEIGHT: usize = 5;
+    const EXPECTED_HEIGHT: HeightType = 5;
     assert_eq!(
-        tree.height, EXPECTED_HEIGHT,
+        tree.height(),
+        EXPECTED_HEIGHT,
         "Tree height is {:#?} but expected {EXPECTED_HEIGHT}",
-        tree.height
-    );
-
-    const EXPECTED_ROOTS_LEN: usize = 1;
-    assert_eq!(
-        tree.roots.len(),
-        EXPECTED_ROOTS_LEN,
-        "Tree roots length is {} but expected {EXPECTED_ROOTS_LEN}",
-        tree.roots.len()
+        tree.height()
     );
 
     const EXPECTED_TOPS_LEN: usize = 1;
@@ -45,26 +39,20 @@ fn test_10x5_insufficient_stock() {
 
     let tree = SearchTree::build(doses, starting_stock);
 
-    const EXPECTED_SIZE: usize = 2;
+    const EXPECTED_SIZE: SizeType = 2;
     assert_eq!(
-        tree.size, EXPECTED_SIZE,
+        tree.size(),
+        EXPECTED_SIZE,
         "Tree size is {:#?} but expected {EXPECTED_SIZE}",
-        tree.size
+        tree.size()
     );
 
-    const EXPECTED_HEIGHT: usize = 2;
+    const EXPECTED_HEIGHT: HeightType = 2;
     assert_eq!(
-        tree.height, EXPECTED_HEIGHT,
+        tree.height(),
+        EXPECTED_HEIGHT,
         "Tree height is {:#?} but expected {EXPECTED_HEIGHT}",
-        tree.height
-    );
-
-    const EXPECTED_ROOTS_LEN: usize = 1;
-    assert_eq!(
-        tree.roots.len(),
-        EXPECTED_ROOTS_LEN,
-        "Tree roots length is {} but expected {EXPECTED_ROOTS_LEN}",
-        tree.roots.len()
+        tree.height()
     );
 
     const EXPECTED_TOPS_LEN: usize = 1;
@@ -83,26 +71,20 @@ fn test_20x5_ample_stock() {
 
     let tree = SearchTree::build(doses, starting_stock);
 
-    const EXPECTED_SIZE: usize = 62;
+    const EXPECTED_SIZE: SizeType = 62;
     assert_eq!(
-        tree.size, EXPECTED_SIZE,
+        tree.size(),
+        EXPECTED_SIZE,
         "Tree size is {:#?} but expected {EXPECTED_SIZE}",
-        tree.size
+        tree.size()
     );
 
-    const EXPECTED_HEIGHT: usize = 5;
+    const EXPECTED_HEIGHT: HeightType = 5;
     assert_eq!(
-        tree.height, EXPECTED_HEIGHT,
+        tree.height(),
+        EXPECTED_HEIGHT,
         "Tree height is {:#?} but expected {EXPECTED_HEIGHT}",
-        tree.height
-    );
-
-    const EXPECTED_ROOTS_LEN: usize = 2;
-    assert_eq!(
-        tree.roots.len(),
-        EXPECTED_ROOTS_LEN,
-        "Tree roots length is {} but expected {EXPECTED_ROOTS_LEN}",
-        tree.roots.len()
+        tree.height()
     );
 
     const EXPECTED_TOPS_LEN: usize = 32;
@@ -121,19 +103,12 @@ fn test_20x5_limited_20_stock() {
 
     let tree = SearchTree::build(doses, starting_stock);
 
-    const EXPECTED_HEIGHT: usize = 5;
+    const EXPECTED_HEIGHT: HeightType = 5;
     assert_eq!(
-        tree.height, EXPECTED_HEIGHT,
+        tree.height(),
+        EXPECTED_HEIGHT,
         "Tree height is {:#?} but expected {EXPECTED_HEIGHT}",
-        tree.height
-    );
-
-    const EXPECTED_ROOTS_LEN: usize = 2;
-    assert_eq!(
-        tree.roots.len(),
-        EXPECTED_ROOTS_LEN,
-        "Tree roots length is {} but expected {EXPECTED_ROOTS_LEN}",
-        tree.roots.len()
+        tree.height()
     );
 
     const EXPECTED_TOPS_LEN: usize = 26;
@@ -152,19 +127,12 @@ fn test_20x5_limited_both_stock() {
 
     let tree = SearchTree::build(doses, starting_stock);
 
-    const EXPECTED_HEIGHT: usize = 4;
+    const EXPECTED_HEIGHT: HeightType = 4;
     assert_eq!(
-        tree.height, EXPECTED_HEIGHT,
+        tree.height(),
+        EXPECTED_HEIGHT,
         "Tree height is {:#?} but expected {EXPECTED_HEIGHT}",
-        tree.height
-    );
-
-    const EXPECTED_ROOTS_LEN: usize = 2;
-    assert_eq!(
-        tree.roots.len(),
-        EXPECTED_ROOTS_LEN,
-        "Tree roots length is {} but expected {EXPECTED_ROOTS_LEN}",
-        tree.roots.len()
+        tree.height()
     );
 
     const EXPECTED_TOPS_LEN: usize = 4;
@@ -183,19 +151,12 @@ fn test_20x5_exact_both_stock() {
 
     let tree = SearchTree::build(doses, starting_stock);
 
-    const EXPECTED_HEIGHT: usize = 5;
+    const EXPECTED_HEIGHT: HeightType = 5;
     assert_eq!(
-        tree.height, EXPECTED_HEIGHT,
+        tree.height(),
+        EXPECTED_HEIGHT,
         "Tree height is {:#?} but expected {EXPECTED_HEIGHT}",
-        tree.height
-    );
-
-    const EXPECTED_ROOTS_LEN: usize = 2;
-    assert_eq!(
-        tree.roots.len(),
-        EXPECTED_ROOTS_LEN,
-        "Tree roots length is {} but expected {EXPECTED_ROOTS_LEN}",
-        tree.roots.len()
+        tree.height()
     );
 
     const EXPECTED_TOPS_LEN: usize = 10;
