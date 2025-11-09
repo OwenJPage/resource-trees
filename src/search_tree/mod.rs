@@ -15,6 +15,7 @@ use {
 
 mod new_node;
 mod node;
+mod subtree_builder;
 mod subtree_index;
 #[cfg(test)]
 mod test;

@@ -47,3 +47,4 @@ condense_wildcard_suffixes = true
 # Macros
 format_macro_matchers = true
 format_macro_bodies = true
+

@@ -1,4 +1,5 @@
 mod dose;
+mod new_tree;
 mod pill_count;
 mod search_tree;
 

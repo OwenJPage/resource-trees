@@ -1,9 +1,11 @@
 use {
     crate::{
-        DayType,
         HeightType,
         SizeType,
-        pill_count::PillCount,
+        search_tree::subtree_builder::{
+            // SubtreeBuilder,
+            SubtreeBuilderParent,
+        },
     },
     std::{
         cell::RefCell,
@@ -15,7 +17,9 @@ use {
     },
 };
 
-trait UTrait: Clone + Copy + Default + Sub {
+impl<U: UTrait> SubtreeBuilderParent for NewNode<U> {}
+
+pub trait UTrait: Clone + Copy + Default + Sub {
     fn checked_sub(self, rhs: Self) -> Option<Self>;
 }
 
@@ -44,15 +48,19 @@ impl<U: UTrait> NewNode<U> {
         Self {
             inner: Rc::new(RefCell::new(Inner {
                 parent: parent.clone(),
-                level: 0,
-                expended,
-                remaining_stock,
                 children: Vec::new(),
                 size: 1,
                 height: 0,
+                level,
+                expended,
+                remaining_stock,
             })),
         }
     }
+
+    // pub fn build() -> SubtreeBuilder<'static, ()> {
+    //     SubtreeBuilder::new(Box::leak(Box::new(())))
+    // }
 
     pub fn new_start_node(remaining_stock: U) -> Self {
         Self::new(&Weak::new(), 0, Default::default(), remaining_stock)
@@ -68,21 +76,22 @@ impl<U: UTrait> NewNode<U> {
         ))
     }
 
-    pub fn add_child(&self) -> Self {
-        let child = Self {
-            inner: Rc::new(RefCell::new(Inner {
-                parent:          Rc::downgrade(&self.inner),
-                level:           self.inner.borrow().level + 1,
-                expended:        PillCount::new(0, 0),
-                remaining_stock: self.inner.borrow().remaining_stock,
-                children:        Vec::new(),
-                size:            1,
-                height:          0,
-            })),
-        };
-
-        self.inner.borrow_mut().children.push(child.clone());
-
-        child
-    }
+    // #[deprecated]
+    // pub fn add_child(&self) -> Self {
+    //     let child = Self {
+    //         inner: Rc::new(RefCell::new(Inner {
+    //             parent:          Rc::downgrade(&self.inner),
+    //             level:           self.inner.borrow().level + 1,
+    //             expended:        PillCount::new(0, 0),
+    //             remaining_stock: self.inner.borrow().remaining_stock,
+    //             children:        Vec::new(),
+    //             size:            1,
+    //             height:          0,
+    //         })),
+    //     };
+    //
+    //     self.inner.borrow_mut().children.push(child.clone());
+    //
+    //     child
+    // }
 }
