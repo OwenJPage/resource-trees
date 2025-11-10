@@ -3,7 +3,7 @@ use {
         NewNode,
         UTrait,
     },
-    std::collections::VecDeque,
+    std::cell::RefCell,
 };
 
 impl SubtreeBuilderParent for () {}
@@ -38,3 +38,34 @@ pub trait SubtreeBuilderSelfParent {}
 //     parent:   Option<NewNode<U>>,
 //     children: VecDeque<VecSubtreeBuilderChild<'this, U>>,
 // }
+
+pub trait SubtreeBuilder {
+    type Child;
+    fn add_child() -> Self::Child;
+}
+
+pub struct SubtreeBuilderRoot<'node, U: UTrait> {
+    parent: &'node mut NewNode<U>,
+    children: RefCell<Vec<SubtreeBuilderChild<'node, U>>>,
+}
+
+impl<'node, U: UTrait> SubtreeBuilder for SubtreeBuilderRoot<'node, U> {
+    type Child = &'node SubtreeBuilderChild<'node, U>;
+
+    fn add_child() -> Self::Child {
+        todo!("Create child node and add to vec, return reference to child")
+    }
+}
+
+pub struct SubtreeBuilderChild<'root, U: UTrait> {
+    root: &'root SubtreeBuilderRoot<'root, U>,
+    children: Vec<&'root Self>,
+}
+
+impl<'root, U: UTrait> SubtreeBuilder for SubtreeBuilderChild<'root, U> {
+    type Child = &'root Self;
+
+    fn add_child() -> Self::Child {
+        todo!("Create child node and add to parent's vec")
+    }
+}
